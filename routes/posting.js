@@ -3,6 +3,7 @@ const router = express.Router();
 const steem = require('steem');
 
 router.get('/:account/:category/:title', function(req, res, next) {
+  let postBody = req.query.body || 'Test post body'
   let permlink = new Date()
     .toISOString()
     .replace(/[^a-zA-Z0-9]+/g, '')
@@ -34,7 +35,7 @@ router.get('/:account/:category/:title', function(req, res, next) {
       req.params.account,
       permlink,
       req.params.title,
-      'Test_body',
+      postBody,
       jsonMetadata,
       function(err, response) {
         if (!err) {
