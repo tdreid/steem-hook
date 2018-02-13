@@ -1,9 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const steem = require('steem');
+const _ = require('lodash/isEmpty');
 
-router.get('/:account/:category/:title', function(req, res, next) {
-  let postBody = req.query.body || 'Test post body'
+router.all('/:account/:category/:title', function(req, res, next) {
+  switch(req.method){
+    case 'GET', 'POST':
+      break;
+    default:
+      let err = new Error(req.method + ' method is not is not supported for the requested resource.');
+      err.status = 405;
+      next(err);
+  }
+  let postBody;
+  if(_(req.body)){
+    postBody = req.query.body || '';
+  } else {
+    postBody = req.body || '';
+  }
+  if (!postBody) {
+    var err = new Error('Body cannot be empty.');
+    err.status = 400;
+    next(err);
+  }
   let permlink = new Date()
     .toISOString()
     .replace(/[^a-zA-Z0-9]+/g, '')
@@ -11,7 +30,9 @@ router.get('/:account/:category/:title', function(req, res, next) {
   let jsonMetadata = {};
   if (req.query.tag) {
     if (!Array.isArray(req.query.tag)) {
-      req.query.tag = [].push(req.query.tag);
+      let arr = [];
+      arr.push(req.query.tag);
+      req.query.tag = arr;
     }
     jsonMetadata = { tags: req.query.tag.slice(0, 4) };
   }
@@ -48,9 +69,15 @@ router.get('/:account/:category/:title', function(req, res, next) {
   });
   promise
     .then(p => {
-      res.send(''.concat('<pre><code>',JSON.stringify(p, null, 4), '</pre></code>'));
+      res.send(
+        ''.concat('<pre><code>', JSON.stringify(p, null, 4), '</pre></code>')
+      );
     })
     .catch(e => {
+      var err = new Error('Error communicating with blockchain');
+      err.status = 500;
+      err.blockchain_error = e;
+      next(err);
       next(e);
     });
 });

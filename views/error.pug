@@ -2,6 +2,9 @@ extends layout
 
 block content
   div(class='container')
-    h1= message
+    if(error.blockchain_error)
+      pre #{error.blockchain_error}
+    else
+      h1= message
     h2= error.status
     pre #{error.stack}

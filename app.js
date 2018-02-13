@@ -13,8 +13,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.text({ limit: 65000, type: 'text/plain'}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
