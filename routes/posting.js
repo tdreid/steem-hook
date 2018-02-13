@@ -5,7 +5,8 @@ const _ = require('lodash/isEmpty');
 
 router.all('/:account/:category/:title', function(req, res, next) {
   switch(req.method){
-    case 'GET', 'POST':
+    case 'GET' :
+    case 'POST':
       break;
     default:
       let err = new Error(req.method + ' method is not is not supported for the requested resource.');
@@ -14,7 +15,7 @@ router.all('/:account/:category/:title', function(req, res, next) {
   }
   let postBody;
   if(_(req.body)){
-    postBody = req.query.body || '';
+    postBody =  req.query.body.substring(0,65000) || '';
   } else {
     postBody = req.body || '';
   }
