@@ -59,7 +59,7 @@ router.all('/:account/:category/:title', function(req, res, next) {
       req.params.category,
       req.params.account,
       permlink,
-      req.params.title,
+      req.params.title.replace(/_/g, ' '),
       postBody,
       jsonMetadata,
       function(err, response) {
