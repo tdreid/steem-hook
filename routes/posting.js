@@ -18,7 +18,7 @@ router.all('/:account/:category/:title', function(req, res, next) {
   }
   let postBody;
   if (_(req.body)) {
-    postBody = req.query.body || '';
+    postBody = req.query.content || '';
   } else {
     postBody = req.body.content ? req.body.content : '';
   }
