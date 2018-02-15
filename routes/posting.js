@@ -4,20 +4,23 @@ const steem = require('steem');
 const _ = require('lodash/isEmpty');
 
 router.all('/:account/:category/:title', function(req, res, next) {
-  switch(req.method){
-    case 'GET' :
+  switch (req.method) {
+    case 'GET':
     case 'POST':
       break;
     default:
-      let err = new Error(req.method + ' method is not is not supported for the requested resource.');
+      let err = new Error(
+        req.method +
+          ' method is not is not supported for the requested resource.'
+      );
       err.status = 405;
       next(err);
   }
   let postBody;
-  if(_(req.body)){
-    postBody =  req.query.body.substring(0,65000) || '';
+  if (_(req.body)) {
+    postBody = req.query.body || '';
   } else {
-    postBody = req.body || '';
+    postBody = req.body.content ? req.body.content : '';
   }
   if (!postBody) {
     var err = new Error('Body cannot be empty.');
