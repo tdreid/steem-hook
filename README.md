@@ -4,16 +4,15 @@ Steem-hook provides a tiny, easy to use web service for posting to the STEEM blo
 
 
 
-    https://mysite.com/posting/myuser/awesome-tag/My_Awesome_Title?body=And%20now%20for%20something%20compleatly%20different%21
+    https://mysite.com/posting/myuser/awesome-tag/My_Awesome_Title?body=hello%2C%20world
 
 You can use a GET or POST request. For a GET request the post body will be read from the `content` query string parameter in the URL as shown above. For a POST provide some content in the request body as JSON and be sure to provide a `Content-Type` header set to `application/json`.
 
 ```json
 {
-	"content" : "And now for something compleatly different\r\n"
+	"content" : "hello, world\r\n"
 }
 ```
-
 
 The only WIF required is posting. If you run steem-hook from your own server you don't have to share this credential with a third party.
 
